@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaCrm.Api", "TaCrm.Api\TaCrm.Api.csproj", "{C0F0BBC9-E5DD-4B02-9EE7-3DEE1ECA6911}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaCrm.Common", "TaCrm.Common\TaCrm.Common.csproj", "{C5502191-B28C-4B3B-9C79-903BB07B7999}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0F0BBC9-E5DD-4B02-9EE7-3DEE1ECA6911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0F0BBC9-E5DD-4B02-9EE7-3DEE1ECA6911}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0F0BBC9-E5DD-4B02-9EE7-3DEE1ECA6911}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0F0BBC9-E5DD-4B02-9EE7-3DEE1ECA6911}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5502191-B28C-4B3B-9C79-903BB07B7999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5502191-B28C-4B3B-9C79-903BB07B7999}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5502191-B28C-4B3B-9C79-903BB07B7999}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5502191-B28C-4B3B-9C79-903BB07B7999}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

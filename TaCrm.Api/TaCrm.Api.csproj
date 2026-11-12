@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>ta_crm_api</RootNamespace>
+        <UserSecretsId>8a780075-7727-4839-9a2f-dacca92d2216</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.14"/>
+        <PackageReference Include="Scalar.AspNetCore" Version="2.18.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TaCrm.Common\TaCrm.Common.csproj" />
+    </ItemGroup>
+
+</Project>
