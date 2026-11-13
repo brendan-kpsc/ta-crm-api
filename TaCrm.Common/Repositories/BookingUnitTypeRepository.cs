@@ -4,6 +4,7 @@ using TaCrm.Common.Data;
 using TaCrm.Common.Data.Dapper;
 using TaCrm.Common.Data.Dtos;
 using TaCrm.Common.Data.Values;
+using TaCrm.Common.Enums;
 using TaCrm.Common.Utils;
 
 namespace TaCrm.Common.Repositories;
@@ -69,15 +70,20 @@ public sealed class BookingUnitTypeRepository(MySqlDataSource database)
 
         var priceBandsQueryCommand = CreatePriceBandsQueryCommand(
             bookingViewQuery, unitTypeId, bookingTimeline, mySqlConnection);
-
-        Console.WriteLine(priceBandsQueryCommand.CommandText);
         
         var queryResult = await priceBandsQueryCommand.ExecuteReaderAsync(cancellationToken);
 
         while (await queryResult.ReadAsync(cancellationToken))
         {
             var unitTypeName = queryResult.GetString("unit_type");
-            var seasonName = queryResult.GetString("season_date_band_name");
+            var seasonName = queryResult.GetString("season_date_band_name") switch
+            {
+                "Low Season" => Season.Low,
+                "Mid Season" => Season.Mid,
+                "Peak Season" => Season.Peak,
+                _ => throw new ArgumentOutOfRangeException(nameof(Season))
+            };
+            var maxOccupancy = queryResult.GetInt32($"max_occupancy");
             var availableUnitCount = queryResult.GetInt32($"num_{bookingTimeline.NumNights}_day_avail");
             var price = queryResult.GetDecimal($"rate_{bookingTimeline.NumNights}_day");
             var depositAmount = ((string[])["CCV", "CCVI"]).Contains(unitTypeName) ? 1500 : 500;
@@ -89,6 +95,7 @@ public sealed class BookingUnitTypeRepository(MySqlDataSource database)
             {
                 UnitTypeId = unitTypeInfo.Id,
                 UnitTypeName = unitTypeInfo.Name,
+                MaxOccupancy = maxOccupancy,
                 SeasonName = seasonName,
                 DepositAmount = depositAmount,
                 Price = price,
