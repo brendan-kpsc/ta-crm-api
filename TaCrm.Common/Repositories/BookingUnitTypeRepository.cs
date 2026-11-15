@@ -19,6 +19,7 @@ public sealed class BookingUnitTypeRepository(MySqlDataSource database)
             Description = bookingUnitTypeDapper.unit_description,
             Overview = bookingUnitTypeDapper.unit_overview,
             ImageUrl = bookingUnitTypeDapper.unit_image_url,
+            WebPageUrl = bookingUnitTypeDapper.unit_web_page ?? "https://twinanchors.com/houseboats/",
             MaxOccupancy = bookingUnitTypeDapper.max_occupancy
         };
     
@@ -33,7 +34,7 @@ public sealed class BookingUnitTypeRepository(MySqlDataSource database)
         
         var bookingViewQuery = await bookingViewCommand.ExecuteScalarAsync(cancellationToken);
             
-        return bookingViewQuery!.ToString();
+        return bookingViewQuery!.ToString()!;
     }
 
     public async Task<BookingUnitTypeEntity> Get(string id, CancellationToken cancellationToken)
@@ -75,7 +76,9 @@ public sealed class BookingUnitTypeRepository(MySqlDataSource database)
 
         while (await queryResult.ReadAsync(cancellationToken))
         {
+            var priceBandUnitTypeId = queryResult.GetString("unit_type_id");
             var unitTypeName = queryResult.GetString("unit_type");
+            var unitImageUrl = queryResult.GetString("unit_image_url");
             var seasonName = queryResult.GetString("season_date_band_name") switch
             {
                 "Low Season" => Season.Low,
@@ -89,12 +92,16 @@ public sealed class BookingUnitTypeRepository(MySqlDataSource database)
             var depositAmount = ((string[])["CCV", "CCVI"]).Contains(unitTypeName) ? 1500 : 500;
             var startDate = queryResult.GetDateOnly("date_slot_date");
 
-            var unitTypeInfo = await Get(unitTypeId, cancellationToken);
-            
+            var unitTypeEntity = await Get(priceBandUnitTypeId, cancellationToken);
+
             availablePriceBands.Add(new UnitPriceBand
             {
-                UnitTypeId = unitTypeInfo.Id,
-                UnitTypeName = unitTypeInfo.Name,
+                UnitTypeId = priceBandUnitTypeId,
+                UnitTypeName = unitTypeName,
+                UnitTypeOverview = unitTypeEntity.Overview,
+                UnitTypeDescription = unitTypeEntity.Description,
+                UnitTypeWebPageUrl = unitTypeEntity.WebPageUrl,
+                UnitTypeImageUrl = unitImageUrl,
                 MaxOccupancy = maxOccupancy,
                 SeasonName = seasonName,
                 DepositAmount = depositAmount,
