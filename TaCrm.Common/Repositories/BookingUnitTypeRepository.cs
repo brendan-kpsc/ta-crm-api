@@ -79,12 +79,13 @@ public sealed class BookingUnitTypeRepository(MySqlDataSource database)
             var priceBandUnitTypeId = queryResult.GetString("unit_type_id");
             var unitTypeName = queryResult.GetString("unit_type");
             var unitImageUrl = queryResult.GetString("unit_image_url");
-            var seasonName = queryResult.GetString("season_date_band_name") switch
+            var seasonNameString = queryResult.GetString("season_date_band_name");
+            var seasonName = seasonNameString switch
             {
-                "Low Season" => Season.Low,
-                "Mid Season" => Season.Mid,
-                "Peak Season" => Season.Peak,
-                _ => throw new ArgumentOutOfRangeException(nameof(Season))
+                "Low Season" or "Low" => Season.Low,
+                "Mid Season" or "Mid" => Season.Mid,
+                "Peak Season" or "Peak" => Season.Peak,
+                _ => throw new ArgumentOutOfRangeException(nameof(Season), $"Value: {seasonNameString}")
             };
             var maxOccupancy = queryResult.GetInt32($"max_occupancy");
             var availableUnitCount = queryResult.GetInt32($"num_{bookingTimeline.NumNights}_day_avail");
