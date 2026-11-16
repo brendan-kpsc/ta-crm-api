@@ -40,6 +40,10 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      
     environment:
       name: Dev
 
