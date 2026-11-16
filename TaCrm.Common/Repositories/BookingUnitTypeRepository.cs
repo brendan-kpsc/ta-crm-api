@@ -82,9 +82,9 @@ public sealed class BookingUnitTypeRepository(MySqlDataSource database)
             var seasonNameString = queryResult.GetString("season_date_band_name");
             var seasonName = seasonNameString switch
             {
-                "Low Season" => Season.Low,
-                "Mid Season" => Season.Mid,
-                "Peak Season" => Season.Peak,
+                "Low Season" or "Low" => Season.Low,
+                "Mid Season" or "Mid" => Season.Mid,
+                "Peak Season" or "Peak" => Season.Peak,
                 _ => throw new ArgumentOutOfRangeException(nameof(Season), $"Value: {seasonNameString}")
             };
             var maxOccupancy = queryResult.GetInt32($"max_occupancy");
