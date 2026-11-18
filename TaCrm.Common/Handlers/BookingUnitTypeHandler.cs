@@ -12,16 +12,16 @@ public sealed class BookingUnitTypeHandler(
     public async Task<IReadOnlyList<BookingUnitTypeEntity>> GetBookableUnitTypes(CancellationToken cancellationToken) =>
         await bookingUnitTypeRepository.GetBookableUnitTypes(cancellationToken);
 
-    public async Task<IReadOnlyList<UnitPriceBand>> SearchAvailableUnitTypes(SearchUnitTypesPayload payload, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<UnitPriceBand>> SearchAvailableUnitTypes(SearchUnitTypesSubmission submission, CancellationToken cancellationToken)
     {
-        var bookingPeriod = await bookingPeriodRepository.Get(payload.BookingPeriodId, cancellationToken);
+        var bookingPeriod = await bookingPeriodRepository.Get(submission.BookingPeriodId, cancellationToken);
         var bookingTimeline = new BookingTimeline
         {
-            StartDate = payload.StartDate,
+            StartDate = submission.StartDate,
             NumNights = bookingPeriod.NumberOfNights
         };
 
-        var availablePriceBands = await Task.WhenAll(payload.UnitTypeIds.Select(id => 
+        var availablePriceBands = await Task.WhenAll(submission.UnitTypeIds.Select(id => 
             bookingUnitTypeRepository.GetAvailablePriceBands(id, bookingTimeline, cancellationToken))
         );
 

@@ -1,6 +1,6 @@
 ﻿namespace TaCrm.Common.Data.Dtos;
 
-public sealed record SearchUnitTypesPayload
+public sealed record SearchUnitTypesSubmission
 {
     public required string[] UnitTypeIds { get; init; }
     public required string BookingPeriodId { get; init; }

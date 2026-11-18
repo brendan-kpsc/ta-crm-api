@@ -16,8 +16,8 @@ public sealed class BookingUnitTypeController(
         new JsonResult(await bookingUnitTypeHandler.GetBookableUnitTypes(HttpContext.RequestAborted));
 
     [HttpGet("SearchAvailableUnits")]
-    public async Task<ActionResult<IReadOnlyList<UnitPriceBand>>> SearchAvailableUnits([FromQuery] SearchUnitTypesPayload payload)
+    public async Task<ActionResult<IReadOnlyList<UnitPriceBand>>> SearchAvailableUnits([FromQuery] SearchUnitTypesSubmission submission)
     {
-        return new JsonResult(await bookingUnitTypeHandler.SearchAvailableUnitTypes(payload, Request.HttpContext.RequestAborted));
+        return new JsonResult(await bookingUnitTypeHandler.SearchAvailableUnitTypes(submission, Request.HttpContext.RequestAborted));
     }
 }
